@@ -1,0 +1,40 @@
+# ================================================
+# Falco - Runtime Security Monitoring
+# ================================================
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: falco
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: falco-config
+  namespace: falco
+data:
+  falco.yaml: |
+    rules_file:
+      - /etc/falco/falco_rules.yaml
+      - /etc/falco/rules.d/custom_rules.yaml
+    json_output: true
+    log_level: info
+    stdout_output:
+      enabled: true
+
+  custom_rules.yaml: |
+    - rule: Terminal shell in container
+      desc: Detect shell spawned in a container
+      condition: spawned_process and container and proc.name in (bash, sh, zsh, ksh)
+      output: >
+        Shell spawned in container
+        (user=%user.name container=%container.name
+        shell=%proc.name)
+      priority: WARNING
+
+    - rule: Sensitive file access
+      desc: Detect access to sensitive files
+      condition: open_read and fd.name in (/etc/shadow, /etc/passwd)
+      output: >
+        Sensitive file opened
+        (user=%user.name file=%fd.name)
+      priority: CRITICAL

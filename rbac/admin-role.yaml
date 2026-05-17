@@ -1,0 +1,24 @@
+# ================================================
+# RBAC - Admin Role Configuration
+# ================================================
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: security-admin-role
+rules:
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: security-admin-binding
+subjects:
+  - kind: User
+    name: security-admin@yourdomain.com
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: security-admin-role
+  apiGroup: rbac.authorization.k8s.io
