@@ -1,8 +1,5 @@
 # 🔐 Kubernetes Cluster Security Hardening
 
-## Architecture
-![Architecture](docs/architecture-diagram.png)
-
 ## Overview
 
 This project documents the design and implementation of enterprise-grade cluster security across an Azure Kubernetes Service (AKS) environment. 
